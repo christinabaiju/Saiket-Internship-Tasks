@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Layout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --clr-bg:        #F7F6F2;
+      --clr-surface:   #FFFFFF;
+      --clr-sidebar:   #1A1A2E;
+      --clr-accent:    #5C6BC0;
+      --clr-accent-lt: #E8EAF6;
+      --clr-text:      #1C1C1C;
+      --clr-muted:     #6B7280;
+      --clr-border:    #E4E4E7;
+      --clr-header-bg: #1A1A2E;
+      --clr-footer-bg: #12121F;
+
+      --ff-display: 'Fraunces', Georgia, serif;
+      --ff-body:    'Inter', system-ui, sans-serif;
+
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(0,0,0,.07);
+      --transition: 200ms ease;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-body);
+      background: var(--clr-bg);
+      color: var(--clr-text);
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: var(--clr-accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    
+    .site-header {
+      background: var(--clr-header-bg);
+      color: #fff;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 1.5rem;
+    }
+    .logo {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+    .logo span { color: var(--clr-accent); }
+
+    /* hamburger (mobile only) */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .site-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.25rem;
+    }
+    .site-nav a {
+      color: rgba(255,255,255,.75);
+      font-size: .9rem;
+      font-weight: 500;
+      padding: .45rem .85rem;
+      border-radius: 6px;
+      transition: background var(--transition), color var(--transition);
+    }
+    .site-nav a:hover,
+    .site-nav a.active {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .page-wrapper {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      grid-template-rows: auto;
+      grid-template-areas: "sidebar main";
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .sidebar {
+      grid-area: sidebar;
+      background: var(--clr-sidebar);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.75rem 1.25rem;
+      position: sticky;
+      top: 80px;   /* header height + gap */
+      box-shadow: var(--shadow);
+    }
+    .sidebar-title {
+      font-family: var(--ff-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.5);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: .7rem;
+      margin-bottom: 1.25rem;
+    }
+    .sidebar-nav { list-style: none; }
+    .sidebar-nav li + li { margin-top: .25rem; }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      color: rgba(255,255,255,.7);
+      font-size: .92rem;
+      font-weight: 500;
+      padding: .55rem .85rem;
+      border-radius: 7px;
+      transition: background var(--transition), color var(--transition);
+    }
+    .sidebar-nav a .icon {
+      width: 20px;
+      text-align: center;
+      opacity: .7;
+    }
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      text-decoration: none;
+    }
+    .sidebar-nav a.active .icon { opacity: 1; }
+
+    .sidebar-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.1);
+      margin: 1.25rem 0;
+    }
+    .sidebar-widget {
+      background: rgba(255,255,255,.06);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1.25rem;
+    }
+    .sidebar-widget h3 {
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,.45);
+      margin-bottom: .75rem;
+    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      background: rgba(92,107,192,.35);
+      color: #b0b8f0;
+      border-radius: 4px;
+      padding: .2rem .55rem;
+      font-size: .78rem;
+      font-weight: 500;
+    }
+
+    .main-content {
+      grid-area: main;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Hero card */
+    .hero-card {
+      background: var(--clr-accent);
+      background: linear-gradient(135deg, #3949AB 0%, #5C6BC0 60%, #7986CB 100%);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(92,107,192,.35);
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: -40px -60px;
+      background: radial-gradient(circle at 80% 30%, rgba(255,255,255,.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-card .eyebrow {
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: .5rem;
+    }
+    .hero-card h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: .75rem;
+    }
+    .hero-card p {
+      font-size: 1rem;
+      opacity: .85;
+      max-width: 540px;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem 1.4rem;
+      border-radius: 7px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: none;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+    .btn-white  { background: #fff; color: var(--clr-accent); }
+    .btn-ghost  { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+    .hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--clr-surface);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--clr-border);
+    }
+    .stat-card .value {
+      font-family: var(--ff-display);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--clr-accent);
+      line-height: 1;
+      margin-bottom: .2rem;
+    }
+    .stat-card .label {
+      font-size: .82rem;
+      color: var(--clr-muted);
+      font-weight: 500;
+    }
+
+    /* Content cards */
+    .content-section { display: flex; flex-direction: column; gap: 1rem; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-header h2 {
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .section-header a { font-size: .85rem; color: var(--clr-accent); font-weight: 500; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--clr-surface);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--clr-border);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.1);
+    }
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: var(--clr-accent-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: .85rem;
+    }
+    .card h3 { font-size: .95rem; font-weight: 600; margin-bottom: .35rem; }
+    .card p  { font-size: .83rem; color: var(--clr-muted); line-height: 1.5; }
+
+    /* Table card */
+    .table-card {
+      background: var(--clr-surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--clr-border);
+      overflow: hidden;
+    }
+    .table-card-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--clr-border);
+      font-weight: 600;
+      font-size: .95rem;
+    }
+    .table-card table { width: 100%; border-collapse: collapse; }
+    .table-card th, .table-card td {
+      text-align: left;
+      padding: .75rem 1.5rem;
+      font-size: .875rem;
+    }
+    .table-card th {
+      background: var(--clr-bg);
+      font-weight: 600;
+      color: var(--clr-muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .table-card tr + tr td { border-top: 1px solid var(--clr-border); }
+    .badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+    .badge-green  { background: #D1FAE5; color: #065F46; }
+    .badge-yellow { background: #FEF3C7; color: #92400E; }
+    .badge-blue   { background: #DBEAFE; color: #1E40AF; }
+
+    .site-footer {
+      background: var(--clr-footer-bg);
+      color: rgba(255,255,255,.55);
+      padding: 2.5rem 2rem 1.5rem;
+      margin-top: 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-brand .logo { font-size: 1.25rem; margin-bottom: .75rem; }
+    .footer-brand p { font-size: .85rem; line-height: 1.65; max-width: 260px; }
+    .footer-col h4 {
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li + li { margin-top: .5rem; }
+    .footer-col a {
+      color: rgba(255,255,255,.5);
+      font-size: .875rem;
+      transition: color var(--transition);
+    }
+    .footer-col a:hover { color: #fff; text-decoration: none; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .75rem;
+      font-size: .8rem;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.45); }
+    .footer-bottom a:hover { color: #fff; text-decoration: none; }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    @media (max-width: 900px) {
+      .page-wrapper {
+        grid-template-columns: 220px 1fr;
+        padding: 1.5rem 1rem;
+        gap: 1.25rem;
+      }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row   { grid-template-columns: repeat(3, 1fr); }
+    }
+
+
+    @media (max-width: 640px) {
+      /* Header */
+      .nav-toggle { display: flex; }
+      .site-nav {
+        display: none;
+        position: absolute;
+        top: 64px; left: 0; right: 0;
+        background: var(--clr-header-bg);
+        padding: 1rem 1.5rem 1.5rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,.3);
+      }
+      .site-nav.open { display: block; }
+      .site-nav ul   { flex-direction: column; gap: .25rem; }
+      .site-nav a    { padding: .6rem .75rem; }
+
+      /* Layout: stacked */
+      .page-wrapper {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "sidebar"
+          "main";
+        padding: 1rem;
+        gap: 1rem;
+      }
+      .sidebar {
+        position: static;   /* unstick on mobile */
+        border-radius: var(--radius);
+        padding: 1.25rem 1rem;
+      }
+      .sidebar-nav ul  { display: flex; flex-wrap: wrap; gap: .35rem; }
+      .sidebar-nav li + li { margin-top: 0; }
+      .sidebar-nav a   { padding: .4rem .7rem; font-size: .82rem; }
+      .sidebar-widget  { display: none; }   /* keep mobile slim */
+
+      /* Stats */
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stats-row .stat-card:last-child { grid-column: span 2; }
+
+      /* Cards */
+      .card-grid { grid-template-columns: 1fr; }
+
+      /* Table: horizontal scroll */
+      .table-card { overflow-x: auto; }
+
+      /* Hero */
+      .hero-card { padding: 1.75rem 1.25rem; }
+      .hero-card h1 { font-size: 1.65rem; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">Responder<span>.</span></div>
+
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="
+      this.nextElementSibling.classList.toggle('open')
+    ">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav">
+      <ul>
+        <li><a href="#" class="active">Dashboard</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+  <aside class="sidebar">
+    <p class="sidebar-title">Navigation</p>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active"><span class="icon">◈</span> Overview</a></li>
+      <li><a href="#"><span class="icon">◉</span> Analytics</a></li>
+      <li><a href="#"><span class="icon">◫</span> Projects</a></li>
+      <li><a href="#"><span class="icon">◎</span> Reports</a></li>
+      <li><a href="#"><span class="icon">◷</span> Calendar</a></li>
+    </ul>
+
+    <hr class="sidebar-divider" />
+
+    <ul class="sidebar-nav">
+      <li><a href="#"><span class="icon">◈</span> Messages</a></li>
+      <li><a href="#"><span class="icon">◉</span> Notifications</a></li>
+      <li><a href="#"><span class="icon">◫</span> Account</a></li>
+    </ul>
+
+    <div class="sidebar-widget">
+      <h3>Topics</h3>
+      <div class="tag-list">
+        <span class="tag">Design</span>
+        <span class="tag">Dev</span>
+        <span class="tag">UX</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Grid</span>
+        <span class="tag">HTML</span>
+      </div>
+    </div>
+  </aside>
+
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+
+    <section class="hero-card">
+      <p class="eyebrow">Welcome back, Alex</p>
+      <h1>Your workspace,<br>beautifully organised.</h1>
+      <p>Everything you need to ship great products — analytics, collaboration, and reporting in one responsive layout.</p>
+      <div class="hero-actions">
+        <button class="btn btn-white">Get started</button>
+        <button class="btn btn-ghost">View docs</button>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="value">84%</div>
+        <div class="label">Tasks completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">12</div>
+        <div class="label">Active projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">3.2k</div>
+        <div class="label">Monthly users</div>
+      </div>
+    </div>
+
+    <!-- Feature cards -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Explore features</h2>
+        <a href="#">View all →</a>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📐</div>
+          <h3>Responsive Grid</h3>
+          <p>Adaptive layouts that reflow gracefully from wide monitors down to small phones.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎨</div>
+          <h3>Design Tokens</h3>
+          <p>Centralised CSS variables keep colour, type, and spacing consistent across every component.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <h3>Media Queries</h3>
+          <p>Breakpoints at 640 px and 900 px switch from three-column desktop to a stacked mobile view.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Zero Dependencies</h3>
+          <p>Pure HTML &amp; CSS — no frameworks required. Fast to load, easy to customise.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="content-section">
+      <div class="section-header">
+        <h2>Recent projects</h2>
+        <a href="#">See all →</a>
+      </div>
+      <div class="table-card">
+        <div class="table-card-header">Project tracker</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Owner</th>
+              <th>Due date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Responsive layout</td>
+              <td>Alex Kim</td>
+              <td>Jun 20, 2026</td>
+              <td><span class="badge badge-green">Complete</span></td>
+            </tr>
+            <tr>
+              <td>Design system v2</td>
+              <td>Sam Osei</td>
+              <td>Jul 5, 2026</td>
+              <td><span class="badge badge-blue">In progress</span></td>
+            </tr>
+            <tr>
+              <td>Mobile app audit</td>
+              <td>Priya Nair</td>
+              <td>Jul 18, 2026</td>
+              <td><span class="badge badge-yellow">Review</span></td>
+            </tr>
+            <tr>
+              <td>API integration</td>
+              <td>Jordan Lee</td>
+              <td>Aug 1, 2026</td>
+              <td><span class="badge badge-blue">In progress</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Responder<span>.</span></div>
+        <p>A clean, responsive layout demo built with pure HTML &amp; CSS — no frameworks, no fluff.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API reference</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Legal</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Responder. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

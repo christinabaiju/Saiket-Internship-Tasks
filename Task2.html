@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F5F0EB;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border: 1px solid #e5e2dc;
+      border-radius: 16px;
+      width: 300px;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .img-wrapper {
+      position: relative;
+      background: #f0f0f0;
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: #3C3489;
+      color: #EEEDFE;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 1.25rem 1.25rem 1.6rem;
+    }
+
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .product-sub {
+      font-size: 13px;
+      color: #888780;
+      margin-bottom: 1rem;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 1.1rem;
+    }
+
+    .stars { display: flex; gap: 2px; }
+    .star { width: 13px; height: 13px; fill: #BA7517; }
+    .star.dim { opacity: 0.3; }
+    .rating-count { font-size: 12px; color: #888780; }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+
+    .price { font-size: 24px; font-weight: 500; color: #1a1a1a; }
+    .price-old { font-size: 14px; color: #B4B2A9; text-decoration: line-through; }
+
+    .add-btn {
+      width: 100%;
+      padding: 12px 0;
+      background: #3C3489;
+      color: #EEEDFE;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: background 0.2s ease, transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .add-btn:hover { background: #26215C; transform: scale(1.01); }
+    .add-btn:active { transform: scale(0.97); }
+
+    .cart-icon {
+      width: 16px; height: 16px;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="product-card">
+    <div class="img-wrapper">
+      <span class="badge">New Arrival</span>
+      <img
+        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80"
+        alt="Nova Runner Pro sneaker in red and white"
+      />
+    </div>
+
+    <div class="card-body">
+      <p class="product-name">Nova Runner Pro</p>
+      <p class="product-sub">Lightweight mesh · Crimson Red</p>
+
+      <div class="rating">
+        <div class="stars" aria-label="4.8 out of 5 stars">
+          <svg class="star" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6 11,10 13,15 8,12 3,15 5,10 1,6 6,6"/></svg>
+          <svg class="star" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6 11,10 13,15 8,12 3,15 5,10 1,6 6,6"/></svg>
+          <svg class="star" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6 11,10 13,15 8,12 3,15 5,10 1,6 6,6"/></svg>
+          <svg class="star" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6 11,10 13,15 8,12 3,15 5,10 1,6 6,6"/></svg>
+          <svg class="star dim" viewBox="0 0 16 16"><polygon points="8,1 10,6 15,6 11,10 13,15 8,12 3,15 5,10 1,6 6,6"/></svg>
+        </div>
+        <span class="rating-count">4.8 (124 reviews)</span>
+      </div>
+
+      <div class="price-row">
+        <span class="price">$68.00</span>
+        <span class="price-old">$89.00</span>
+      </div>
+
+      <button class="add-btn" aria-label="Add Nova Runner Pro to cart">
+        <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        Add to Cart
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>
